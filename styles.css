@@ -27,6 +27,15 @@ h1 { font-size: clamp(2.8rem, 8vw, 6.5rem); letter-spacing: -.06em; max-width: 9
 h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
 h3 { font-size: 1.5rem; }
 .hero-copy { color: var(--muted); font-size: 1.1rem; margin: 2rem 0; max-width: 34rem; }
+.weather-card { background: rgba(36, 51, 56, .82); border: 1px solid #3a5154; margin-top: 3rem; max-width: 34rem; padding: 1rem 1.15rem; }
+.weather-card-top { align-items: center; display: flex; justify-content: space-between; }
+.weather-card-top > span:last-child { color: var(--muted); font-size: .75rem; }
+.weather-main { align-items: center; display: flex; gap: .85rem; margin-top: .85rem; }
+.weather-icon { font-size: 2rem; line-height: 1; }
+.weather-status { font-size: 1.1rem; font-weight: 800; margin: 0; }
+.weather-location { color: var(--muted); font-size: .8rem; margin: .15rem 0 0; }
+.weather-temperature { font-size: 2.1rem; line-height: 1; margin-left: auto; }
+.weather-details { color: var(--muted); font-size: .8rem; margin: .85rem 0 0; }
 .button { background: var(--accent); border: 1px solid var(--accent); color: #0b1315; display: inline-block; padding: .8rem 1.2rem; text-decoration: none; }
 .button-light { background: transparent; color: var(--ink); cursor: pointer; }
 .button:focus-visible, .menu-toggle:focus-visible, .mine-cell:focus-visible { outline: 3px solid #f0a500; outline-offset: 3px; }
