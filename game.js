@@ -5,13 +5,17 @@
   const status = document.querySelector('#game-status');
   const flagCount = document.querySelector('#flag-count');
   const newGameButton = document.querySelector('#new-game');
+  const resetButton = document.querySelector('#game-reset');
+  const timer = document.querySelector('#game-timer');
 
-  if (!minefield || !status || !flagCount || !newGameButton) return;
+  if (!minefield || !status || !flagCount || !newGameButton || !resetButton || !timer) return;
 
   let board;
   let started;
   let gameOver;
   let flags;
+  let startedAt;
+  let timerId;
 
   const indexOf = (row, col) => row * SIZE + col;
   const inBounds = (row, col) => row >= 0 && row < SIZE && col >= 0 && col < SIZE;
@@ -27,7 +31,17 @@
     return cells;
   };
 
-  const updateCounter = () => { flagCount.textContent = `깃발 ${flags} / ${MINES}`; };
+  const updateCounter = () => { flagCount.textContent = `지뢰 ${MINES - flags}`; };
+
+  const updateTimer = () => {
+    const elapsed = startedAt ? Math.min(999, Math.floor((Date.now() - startedAt) / 1000)) : 0;
+    timer.textContent = `시간 ${String(elapsed).padStart(3, '0')}`;
+  };
+
+  const stopTimer = () => {
+    window.clearInterval(timerId);
+    timerId = undefined;
+  };
 
   const placeMines = (safeIndex) => {
     const candidates = Array.from({ length: SIZE * SIZE }, (_, index) => index)
@@ -52,16 +66,24 @@
 
   const reveal = (cell) => {
     if (gameOver || cell.flagged || cell.open) return;
-    if (!started) { started = true; placeMines(cell.index); status.textContent = '지뢰를 피해서 모든 안전한 칸을 여세요.'; }
+    if (!started) {
+      started = true;
+      startedAt = Date.now();
+      placeMines(cell.index);
+      timerId = window.setInterval(updateTimer, 1000);
+      status.textContent = '지뢰를 피해서 모든 안전한 칸을 여세요.';
+    }
     cell.open = true;
     renderCell(cell);
     if (!cell.mine && cell.number === 0) neighbors(cell.row, cell.col).forEach(reveal);
     if (cell.mine) {
       gameOver = true;
+      stopTimer();
       status.textContent = '지뢰를 밟았습니다. 새 게임으로 다시 시작하세요.';
       board.forEach(renderCell);
     } else if (board.filter((item) => !item.mine && !item.open).length === 0) {
       gameOver = true;
+      stopTimer();
       status.textContent = '축하합니다! 모든 안전한 칸을 열었습니다.';
     }
   };
@@ -82,6 +104,9 @@
     started = false;
     gameOver = false;
     flags = 0;
+    startedAt = undefined;
+    stopTimer();
+    resetButton.textContent = '🙂';
     minefield.replaceChildren();
     board.forEach((cell) => {
       const element = document.createElement('button');
@@ -112,9 +137,11 @@
       minefield.append(element);
     });
     updateCounter();
+    updateTimer();
     status.textContent = '첫 칸을 열어 게임을 시작하세요.';
   };
 
   newGameButton.addEventListener('click', startGame);
+  resetButton.addEventListener('click', startGame);
   startGame();
 })();

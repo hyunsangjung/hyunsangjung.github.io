@@ -90,9 +90,19 @@
         </article>
         <div class="game-toolbar" aria-live="polite">
           <span id="game-status">첫 칸을 열어 게임을 시작하세요.</span>
-          <span id="flag-count">깃발 0 / 80</span>
+          <div class="game-metrics" aria-label="게임 정보">
+            <span id="flag-count">지뢰 80</span>
+            <span id="game-timer">시간 000</span>
+          </div>
         </div>
-        <div id="minefield" class="minefield" role="grid" aria-label="20×20 지뢰찾기 게임판"></div>
+        <div class="game-panel">
+          <div class="game-panel-head">
+            <span class="game-panel-label">DIFFICULTY / HARD</span>
+            <button id="game-reset" class="game-reset" type="button" aria-label="게임 다시 시작">🙂</button>
+            <span class="game-panel-label">20 × 20 / 80 MINES</span>
+          </div>
+          <div id="minefield" class="minefield" role="grid" aria-label="20×20 지뢰찾기 게임판"></div>
+        </div>
         <p class="game-help">PC: 왼쪽 클릭으로 열기, 오른쪽 클릭으로 깃발 표시 · 모바일: 탭으로 열기, 길게 눌러 깃발 표시 · 키보드: Enter/Space 열기, F 깃발</p>
       </section>
 
