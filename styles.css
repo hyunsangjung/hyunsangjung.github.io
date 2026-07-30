@@ -46,6 +46,8 @@ h3 { font-size: 1.5rem; }
 .game-toolbar { align-items: center; display: flex; justify-content: space-between; margin: 2rem 0 1rem; }
 .game-metrics { display: flex; gap: .75rem; }
 .game-metrics span { background: var(--ink); color: #f7f5ef; font-variant-numeric: tabular-nums; padding: .55rem .75rem; }
+.hint-button { background: var(--accent); border: 0; color: var(--ink); cursor: pointer; font: inherit; font-size: .82rem; font-weight: 800; padding: .55rem .75rem; }
+.hint-button:disabled { cursor: not-allowed; opacity: .45; }
 .game-panel { background: #d6dbd8; border: 1px solid #aab4b0; box-shadow: 10px 10px 0 rgba(27, 36, 39, .12); max-width: 42rem; padding: .7rem; }
 .game-panel-head { align-items: center; color: #506064; display: flex; font-size: .68rem; font-weight: 800; justify-content: space-between; letter-spacing: .12em; margin-bottom: .7rem; }
 .game-reset { align-items: center; background: #f7f5ef; border: 2px solid #8d9995; border-radius: 50%; cursor: pointer; display: flex; font-size: 1.15rem; height: 2.3rem; justify-content: center; width: 2.3rem; }
@@ -74,6 +76,7 @@ h3 { font-size: 1.5rem; }
   .game-toolbar { align-items: start; flex-direction: column; gap: .75rem; }
   .game-metrics { width: 100%; }
   .game-metrics span { flex: 1; text-align: center; }
+  .hint-button { flex: 1; }
   .game-panel { box-shadow: 6px 6px 0 rgba(27, 36, 39, .12); padding: .45rem; }
   .game-panel-head { font-size: .56rem; }
 }

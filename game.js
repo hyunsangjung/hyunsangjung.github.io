@@ -7,8 +7,9 @@
   const newGameButton = document.querySelector('#new-game');
   const resetButton = document.querySelector('#game-reset');
   const timer = document.querySelector('#game-timer');
+  const hintButton = document.querySelector('#hint-button');
 
-  if (!minefield || !status || !flagCount || !newGameButton || !resetButton || !timer) return;
+  if (!minefield || !status || !flagCount || !newGameButton || !resetButton || !timer || !hintButton) return;
 
   let board;
   let started;
@@ -16,6 +17,7 @@
   let flags;
   let startedAt;
   let timerId;
+  let hints;
 
   const indexOf = (row, col) => row * SIZE + col;
   const inBounds = (row, col) => row >= 0 && row < SIZE && col >= 0 && col < SIZE;
@@ -41,6 +43,11 @@
   const stopTimer = () => {
     window.clearInterval(timerId);
     timerId = undefined;
+  };
+
+  const updateHints = () => {
+    hintButton.textContent = `힌트 ${hints}`;
+    hintButton.disabled = hints === 0 || gameOver;
   };
 
   const placeMines = (safeIndex) => {
@@ -81,10 +88,12 @@
       stopTimer();
       status.textContent = '지뢰를 밟았습니다. 새 게임으로 다시 시작하세요.';
       board.forEach(renderCell);
+      updateHints();
     } else if (board.filter((item) => !item.mine && !item.open).length === 0) {
       gameOver = true;
       stopTimer();
       status.textContent = '축하합니다! 모든 안전한 칸을 열었습니다.';
+      updateHints();
     }
   };
 
@@ -97,6 +106,21 @@
     updateCounter();
   };
 
+  const useHint = () => {
+    if (gameOver || hints === 0) return;
+    if (!started) {
+      status.textContent = '첫 칸을 연 뒤 힌트를 사용할 수 있습니다.';
+      return;
+    }
+    const candidates = board.filter((cell) => !cell.open && !cell.flagged && !cell.mine);
+    if (!candidates.length) return;
+    const cell = candidates[Math.floor(Math.random() * candidates.length)];
+    hints -= 1;
+    reveal(cell);
+    if (!gameOver) status.textContent = `힌트를 사용했습니다. 남은 힌트 ${hints}회.`;
+    updateHints();
+  };
+
   const startGame = () => {
     board = Array.from({ length: SIZE * SIZE }, (_, index) => ({
       index, row: Math.floor(index / SIZE), col: index % SIZE, mine: false, number: 0, open: false, flagged: false, element: null,
@@ -104,6 +128,7 @@
     started = false;
     gameOver = false;
     flags = 0;
+    hints = 3;
     startedAt = undefined;
     stopTimer();
     resetButton.textContent = '🙂';
@@ -138,10 +163,12 @@
     });
     updateCounter();
     updateTimer();
+    updateHints();
     status.textContent = '첫 칸을 열어 게임을 시작하세요.';
   };
 
   newGameButton.addEventListener('click', startGame);
   resetButton.addEventListener('click', startGame);
+  hintButton.addEventListener('click', useHint);
   startGame();
 })();
